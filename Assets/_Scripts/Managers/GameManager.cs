@@ -5,7 +5,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static Action OnRoundWon;
+    public static Action OnGameOver;
+
+    [Header("References")]
+    [SerializeField] private RoundReadyAnimationUI roundReadyAnimationUI;
+
     [Header("Player")]
+    [SerializeField] private PlayerPlatform playerPrefab;
+    [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private float waitTimeToSpawnPlayerAgain;
     private PlayerPlatform player;
 
     [Header("Balls Values")]
@@ -19,7 +28,6 @@ public class GameManager : MonoBehaviour
     {
         Block.OnBlockDestroyed += Block_OnBlockDestroyed;
         Ball.OnBallDestroyed += Ball_OnBallDestroyed;
-        PlayerPlatform.OnPlayerSpawned += PlayerPlatform_OnPlayerSpawned;
     }
 
 
@@ -27,25 +35,49 @@ public class GameManager : MonoBehaviour
     {
         Block.OnBlockDestroyed -= Block_OnBlockDestroyed;
         Ball.OnBallDestroyed -= Ball_OnBallDestroyed;
-        PlayerPlatform.OnPlayerSpawned -= PlayerPlatform_OnPlayerSpawned;
     }
 
     private void Start()
     {
-        blocksInLevel = FindObjectsByType<Block>(FindObjectsSortMode.None).Length;
+        StartCoroutine(StartGameSequenceRoutine());
+    }
+
+    private IEnumerator StartGameSequenceRoutine()
+    {
+        GetAllBlocksToDestroyInLevel();
+
+        float timeToCompleteSceneAnimation = SceneTransitionUI.Instance.GetTimeToCompleteAnimation();
+
+        roundReadyAnimationUI.StartRoundAnimation(timeToCompleteSceneAnimation);
+
+        float waitPlayerAnimationTime = roundReadyAnimationUI.GetAnimationTime() + timeToCompleteSceneAnimation;
+
+        yield return new WaitForSeconds(waitPlayerAnimationTime);
+
+        SpawnPlayer();
+    }
+
+    private void SpawnPlayer()
+    {
+        player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+
         ballsInGame = 1;
     }
 
-    private void Block_OnBlockDestroyed()
+    private void GetAllBlocksToDestroyInLevel()
+    {
+        blocksInLevel = FindObjectsByType<Block>(FindObjectsSortMode.None).Length;
+    }
+
+    private void Block_OnBlockDestroyed(int score)
     {
         blocksDestroyed++;
 
         if (blocksDestroyed >= blocksInLevel)
         {
-            Debug.Log("Victoria");
+            OnRoundWon?.Invoke();
         }
     }
-
 
     private void Ball_OnBallDestroyed()
     {
@@ -57,15 +89,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void PlayerPlatform_OnPlayerSpawned(PlayerPlatform platform)
-    {
-        player = platform;
-    }
-
     private void Defeat()
     {
-        Debug.Log("Derrota");
+        DestroyObjectsOnDefeat();
 
+        bool canPlayAgain = GameplayDataManager.Instance.LiveLost();
+
+        if (canPlayAgain)
+        {
+            StartCoroutine(PlayAgainCoroutine());
+        }
+        else
+        {
+            OnGameOver?.Invoke();
+        }
+    }
+
+    private void DestroyObjectsOnDefeat()
+    {
         if (player != null)
         {
             player.DestroyPlayerOnDefeat();
@@ -73,4 +114,13 @@ public class GameManager : MonoBehaviour
             player = null;
         }
     }
+
+    private IEnumerator PlayAgainCoroutine()
+    {
+        yield return new WaitForSeconds(waitTimeToSpawnPlayerAgain);
+
+        SpawnPlayer();
+    }
+
+
 }

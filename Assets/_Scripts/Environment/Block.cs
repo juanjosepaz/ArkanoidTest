@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class Block : MonoBehaviour, IDestructible
 {
-    public static Action OnBlockDestroyed;
+    public static Action<int> OnBlockDestroyed;
 
     [SerializeField] private int maxHitsToDestroy;
     [SerializeField] private int actualHealth;
+    [SerializeField] private int score;
 
     private void OnEnable()
     {
@@ -27,7 +28,7 @@ public class Block : MonoBehaviour, IDestructible
 
     public void DestroyObjectBehaviour()
     {
-        OnBlockDestroyed?.Invoke();
+        OnBlockDestroyed?.Invoke(score);
 
         Destroy(gameObject);
     }

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class PlayerPlatform : MonoBehaviour
 {
-    public static Action<PlayerPlatform> OnPlayerSpawned;
-
     [Header("References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerShoot playerShoot;
@@ -16,11 +14,6 @@ public class PlayerPlatform : MonoBehaviour
     [SerializeField] private float waitTimeToPlay;
     [SerializeField] private float waitTimeToDestroy;
     private const string DESTROY_ANIMATION_TRIGGER = "Destroy";
-
-    private void Awake()
-    {
-        OnPlayerSpawned?.Invoke(this);
-    }
 
     private void OnEnable()
     {

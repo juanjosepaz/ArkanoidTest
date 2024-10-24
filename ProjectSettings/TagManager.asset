@@ -50,3 +50,6 @@ TagManager:
   - name: Player
     uniqueID: 3891856985
     locked: 0
+  - name: Border
+    uniqueID: 3737985957
+    locked: 0
