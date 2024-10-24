@@ -44,7 +44,7 @@ public class PlayerShoot : MonoBehaviour
     {
         ballAttachedToPlayer.transform.SetParent(null);
 
-        ballAttachedToPlayer.ShootBall();
+        ballAttachedToPlayer.ShootBall(transform.position);
 
         ballAttachedToPlayer = null;
     }

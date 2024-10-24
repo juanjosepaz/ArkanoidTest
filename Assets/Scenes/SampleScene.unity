@@ -4514,7 +4514,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &407017853
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4611,7 +4611,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 100
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 0
@@ -15469,13 +15469,10 @@ MonoBehaviour:
   rb2D: {fileID: 1401303265}
   hitpointRange: 0.1
   maxAngleBounceRadious: 75
-  minClampBounceValue: 0
-  maxClampBounceValue: 0
   playerWidth: 2
-  minXShootValue: 0.2
-  maxXShootValue: 1
-  minYShootValue: 0.5
-  maxYShootValue: 1
+  bounceRangeVectical: {x: 0, y: 0}
+  bounceRangeHorizontalRight: {x: 0, y: 0}
+  bounceRangeHorizontalLeft: {x: 0, y: 0}
 --- !u!58 &1401303267
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -21328,7 +21325,7 @@ Transform:
   m_GameObject: {fileID: 1801892265}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.41199994, z: 0}
+  m_LocalPosition: {x: 0, y: 0.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21413,13 +21410,10 @@ MonoBehaviour:
   rb2D: {fileID: 1801892268}
   hitpointRange: 0.1
   maxAngleBounceRadious: 75
-  minClampBounceValue: 0.2
-  maxClampBounceValue: 0.8
   playerWidth: 2
-  minXShootValue: 0.2
-  maxXShootValue: 1
-  minYShootValue: 0.5
-  maxYShootValue: 1
+  bounceRangeVectical: {x: 85, y: 95}
+  bounceRangeHorizontalRight: {x: 170, y: 180}
+  bounceRangeHorizontalLeft: {x: 0, y: 10}
 --- !u!212 &1801892270
 SpriteRenderer:
   m_ObjectHideFlags: 0

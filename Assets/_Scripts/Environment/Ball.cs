@@ -15,18 +15,17 @@ public class Ball : MonoBehaviour
     [Header("Values")]
     [Range(0f, 0.9f)][SerializeField] private float hitpointRange;
     [SerializeField] private float maxAngleBounceRadious;
-    [SerializeField] private float minClampBounceValue;
-    [SerializeField] private float maxClampBounceValue;
     [SerializeField] private float playerWidth;
     private Vector3 lastVelocity;
     private Vector3 lastBounceVelocity;
     private bool blockDestroyedInThisFrame;
 
+    [Header("Bounce Angle")]
+    [SerializeField] private Vector2 bounceRangeVectical;
+    [SerializeField] private Vector2 bounceRangeHorizontalRight;
+    [SerializeField] private Vector2 bounceRangeHorizontalLeft;
+
     [Header("Shoot Ball Values")]
-    [SerializeField] private float minXShootValue = 0.2f;
-    [SerializeField] private float maxXShootValue = 1f;
-    [SerializeField] private float minYShootValue = 0.5f;
-    [SerializeField] private float maxYShootValue = 1f;
     private bool isBallMoving;
 
     #region UnityMethods
@@ -76,7 +75,7 @@ public class Ball : MonoBehaviour
     {
         Vector2 contactNormal = other.contacts[0].normal;
 
-        Vector3 direction = Vector3.Reflect(lastVelocity.normalized, contactNormal);
+        Vector2 direction = Vector2.Reflect(lastVelocity.normalized, contactNormal);
 
         direction = ClampBounceDirection(direction);
 
@@ -87,47 +86,60 @@ public class Ball : MonoBehaviour
     {
         Transform playerTransform = other.transform;
 
-        Vector3 ballPosition = transform.position;
+        Vector2 bounceDirectionNormalized = GetBounceDirectionNormalizedFromPlayer(playerTransform.position);
 
-        float hitPoint = (ballPosition.x - playerTransform.position.x) / playerWidth;
-
-        hitPoint = Mathf.Clamp(hitPoint, -1f, 1f);
-
-        if (hitPoint > -hitpointRange && hitPoint < hitpointRange)
-        {
-            BallBounceFromWall(other);
-
-            return;
-        }
-
-        float bounceAngle = hitPoint * maxAngleBounceRadious;
-
-        Vector2 newDirection = new Vector2(Mathf.Sin(bounceAngle * Mathf.Deg2Rad), Mathf.Cos(bounceAngle * Mathf.Deg2Rad)).normalized;
-
-        newDirection = ClampBounceDirection(newDirection);
-
-        rb2D.velocity = newDirection * Mathf.Max(lastVelocity.magnitude, 0);
+        rb2D.velocity = bounceDirectionNormalized * Mathf.Max(lastVelocity.magnitude, 0);
     }
 
-    private Vector3 ClampBounceDirection(Vector3 direction)
+    private Vector3 ClampBounceDirection(Vector2 direction)
     {
-        if (direction.x < 0)
+        float bounceAngle = GetBounceAngleFromDirection(direction);
+
+        float sign = Mathf.Sign(bounceAngle);
+
+        if (Mathf.Abs(bounceAngle) > bounceRangeVectical.x && Mathf.Abs(bounceAngle) < bounceRangeVectical.y)
         {
-            Mathf.Clamp(direction.x, -maxClampBounceValue, -minClampBounceValue);
+            if (Mathf.Abs(bounceAngle - bounceRangeVectical.x) < Mathf.Abs(bounceAngle - bounceRangeVectical.y))
+            {
+                bounceAngle = bounceRangeVectical.x;
+            }
+            else
+            {
+                bounceAngle = bounceRangeVectical.y;
+            }
+        }
+        else if (Mathf.Abs(bounceAngle) > bounceRangeHorizontalRight.x && Mathf.Abs(bounceAngle) < bounceRangeHorizontalRight.y)
+        {
+            bounceAngle = bounceRangeHorizontalRight.x;
+        }
+        else if (Mathf.Abs(bounceAngle) > bounceRangeHorizontalLeft.x && Mathf.Abs(bounceAngle) < bounceRangeHorizontalLeft.y)
+        {
+            bounceAngle = bounceRangeHorizontalLeft.x;
         }
         else
         {
-            Mathf.Clamp(direction.x, minClampBounceValue, maxClampBounceValue);
+            return direction;
         }
 
-        if (direction.y < 0)
-        {
-            Mathf.Clamp(direction.y, -maxClampBounceValue, -minClampBounceValue);
-        }
-        else
-        {
-            Mathf.Clamp(direction.y, minClampBounceValue, maxClampBounceValue);
-        }
+        bounceAngle *= sign;
+
+        Vector2 newDirection = GetBounceDirectionFromAngle(bounceAngle);
+
+        return newDirection;
+    }
+
+    private float GetBounceAngleFromDirection(Vector2 direction)
+    {
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+        return angle;
+    }
+
+    private Vector2 GetBounceDirectionFromAngle(float angle)
+    {
+        float angleInRadians = angle * Mathf.Deg2Rad;
+
+        Vector2 direction = new(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
 
         return direction;
     }
@@ -145,35 +157,32 @@ public class Ball : MonoBehaviour
     #endregion
 
     #region ShootBall
-    public void ShootBall()
+    public void ShootBall(Vector3 playerPosition)
     {
         rb2D.simulated = true;
 
-        Vector2 shootDirection = GetRandomShootDirection();
+        Vector2 shootDirection = GetBounceDirectionNormalizedFromPlayer(playerPosition);
 
-        rb2D.velocity = shootDirection.normalized * ballSpeed;
+        rb2D.velocity = shootDirection * ballSpeed;
 
         isBallMoving = true;
     }
 
-    private Vector2 GetRandomShootDirection()
+    private Vector2 GetBounceDirectionNormalizedFromPlayer(Vector3 playerPosition)
     {
-        int randomXDirection = Random.Range(0, 2);
+        Vector3 ballPosition = transform.position;
 
-        Vector2 shootDirection = new();
+        float hitPoint = (ballPosition.x - playerPosition.x) / playerWidth;
 
-        if (randomXDirection == 1)
-        {
-            shootDirection.x = Random.Range(minXShootValue, maxXShootValue);
-        }
-        else
-        {
-            shootDirection.x = Random.Range(-maxXShootValue, -minXShootValue);
-        }
+        hitPoint = Mathf.Clamp(hitPoint, -1f, 1f);
 
-        shootDirection.y = Random.Range(minYShootValue, maxYShootValue);
+        float bounceAngle = hitPoint * maxAngleBounceRadious;
 
-        return shootDirection;
+        Vector2 newDirection = new Vector2(Mathf.Sin(bounceAngle * Mathf.Deg2Rad), Mathf.Cos(bounceAngle * Mathf.Deg2Rad)).normalized;
+
+        newDirection = ClampBounceDirection(newDirection);
+
+        return newDirection.normalized;
     }
 
     #endregion
