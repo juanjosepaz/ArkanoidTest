@@ -10,5 +10,10 @@ public class BottomLimit : MonoBehaviour
         {
             ball.DestroyBall();
         }
+
+        if (other.TryGetComponent(out PowerUpBase powerUp))
+        {
+            Destroy(powerUp);
+        }
     }
 }

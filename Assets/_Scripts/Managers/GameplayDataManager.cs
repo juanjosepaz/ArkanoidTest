@@ -6,11 +6,13 @@ using UnityEngine;
 public class GameplayDataManager : MonoBehaviour
 {
     public static GameplayDataManager Instance { get; private set; }
+    public static Action<int> OnLifesChanged;
+    public static Action<int> OnScoreChanged;
     public const string HIGH_SCORE = "HighScore";
 
     [Header("Player")]
-    private const int MAX_LIVES = 5;
-    private int actualLives;
+    private const int MAX_LIFES = 5;
+    private int actualLifes;
 
     [Header("Score")]
     private int highScore;
@@ -44,20 +46,31 @@ public class GameplayDataManager : MonoBehaviour
     public void InitializeDataManager()
     {
         actualScore = 0;
-        actualLives = 2;
+        actualLifes = 2;
         highScore = PlayerPrefs.GetInt(HIGH_SCORE, 0);
     }
 
-    private void Block_OnBlockDestroyed(int score)
+    private void Block_OnBlockDestroyed(Block block)
     {
-        actualScore += score;
+        actualScore += block.GetBlockScore();
+        OnScoreChanged?.Invoke(actualScore);
     }
 
-    public bool LiveLost()
+    public void LifeGained()
     {
-        actualLives--;
+        if (actualLifes + 1 < MAX_LIFES)
+        {
+            actualLifes++;
+            OnLifesChanged?.Invoke(actualLifes);
+        }
+    }
 
-        if (actualLives < 0)
+    public bool LifeLost()
+    {
+        actualLifes--;
+        OnLifesChanged?.Invoke(actualLifes);
+
+        if (actualLifes < 0)
         {
             return false;
         }

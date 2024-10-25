@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -1851520279, guid: c35b03ddfaca5524c913e3d1a117a94e, type: 3}
+    - target: {fileID: 7713194838122856461, guid: d5792a63bb87b3f43ae3db7895ac0949, type: 3}
+      propertyPath: score
+      value: 110
+      objectReference: {fileID: 0}
     - target: {fileID: 8458393001301550221, guid: d5792a63bb87b3f43ae3db7895ac0949, type: 3}
       propertyPath: m_Name
       value: PinkBlock

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,17 +25,22 @@ public class GameManager : MonoBehaviour
     private int blocksInLevel;
     private int blocksDestroyed;
 
+    [Header("PowerUps")]
+    [Range(0f, 100f)][SerializeField] private float spawnPowerUpChance;
+    [SerializeField] private PowerUpBase[] powerUpPrefabs;
+
     private void OnEnable()
     {
         Block.OnBlockDestroyed += Block_OnBlockDestroyed;
         Ball.OnBallDestroyed += Ball_OnBallDestroyed;
+        Ball.OnBallCreated += Ball_OnBallCreated;
     }
-
 
     private void OnDisable()
     {
         Block.OnBlockDestroyed -= Block_OnBlockDestroyed;
         Ball.OnBallDestroyed -= Ball_OnBallDestroyed;
+        Ball.OnBallCreated -= Ball_OnBallCreated;
     }
 
     private void Start()
@@ -60,22 +66,41 @@ public class GameManager : MonoBehaviour
     private void SpawnPlayer()
     {
         player = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+    }
 
-        ballsInGame = 1;
+    private void Ball_OnBallCreated()
+    {
+        ballsInGame++;
     }
 
     private void GetAllBlocksToDestroyInLevel()
     {
-        blocksInLevel = FindObjectsByType<Block>(FindObjectsSortMode.None).Length;
+        Block[] allBlocksInLevel = FindObjectsByType<Block>(FindObjectsSortMode.None);
+
+        int blockCount = 0;
+
+        foreach (Block block in allBlocksInLevel)
+        {
+            if (block.CanDestroyTheBlock())
+            {
+                blockCount++;
+            }
+        }
+
+        blocksInLevel = blockCount;
     }
 
-    private void Block_OnBlockDestroyed(int score)
+    private void Block_OnBlockDestroyed(Block block)
     {
         blocksDestroyed++;
 
         if (blocksDestroyed >= blocksInLevel)
         {
             OnRoundWon?.Invoke();
+        }
+        else
+        {
+            TryToSpawnAPowerUp(block.transform.position);
         }
     }
 
@@ -93,7 +118,7 @@ public class GameManager : MonoBehaviour
     {
         DestroyObjectsOnDefeat();
 
-        bool canPlayAgain = GameplayDataManager.Instance.LiveLost();
+        bool canPlayAgain = GameplayDataManager.Instance.LifeLost();
 
         if (canPlayAgain)
         {
@@ -122,5 +147,22 @@ public class GameManager : MonoBehaviour
         SpawnPlayer();
     }
 
+
+    private void TryToSpawnAPowerUp(Vector3 position)
+    {
+        float randomNumber = Random.Range(0f, 100f);
+
+        if (randomNumber < spawnPowerUpChance)
+        {
+            SpawnRandomPowerUp(position);
+        }
+    }
+
+    private void SpawnRandomPowerUp(Vector3 position)
+    {
+        int randomPowerUpIndex = Random.Range(0, powerUpPrefabs.Length);
+
+        Instantiate(powerUpPrefabs[randomPowerUpIndex], position, Quaternion.identity);
+    }
 
 }

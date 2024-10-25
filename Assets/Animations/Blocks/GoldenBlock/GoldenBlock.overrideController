@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GoldenBlock
+  m_Controller: {fileID: 9100000, guid: 6bc75e31059dbef449bae0bd02757efd, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: a954104a270e36f42b56c905da3e7675, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 26ad020926db1ae418a4f5de4d55ab3c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 88a2e35b26ea1dd41b7106c987746900, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 1451ea484a773564d902645f9b9e57a4, type: 2}

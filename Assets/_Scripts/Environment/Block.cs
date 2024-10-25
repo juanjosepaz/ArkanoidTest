@@ -2,14 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour, IDestructible
 {
-    public static Action<int> OnBlockDestroyed;
+    public static Action<Block> OnBlockDestroyed;
 
+    [SerializeField] private int score;
+
+    [Header("Health")]
     [SerializeField] private int maxHitsToDestroy;
     [SerializeField] private int actualHealth;
-    [SerializeField] private int score;
+    [SerializeField] private bool canDestroyTheBlock = true;
 
     private void OnEnable()
     {
@@ -18,6 +22,8 @@ public class Block : MonoBehaviour, IDestructible
 
     public void TakeHit()
     {
+        if (!canDestroyTheBlock) { return; }
+
         actualHealth--;
 
         if (actualHealth <= 0)
@@ -28,8 +34,11 @@ public class Block : MonoBehaviour, IDestructible
 
     public void DestroyObjectBehaviour()
     {
-        OnBlockDestroyed?.Invoke(score);
+        OnBlockDestroyed?.Invoke(this);
 
         Destroy(gameObject);
     }
+
+    public int GetBlockScore() => score;
+    public bool CanDestroyTheBlock() => canDestroyTheBlock;
 }

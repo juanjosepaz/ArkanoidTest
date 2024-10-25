@@ -71,8 +71,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1880306489
-  m_SortingLayer: 1
-  m_SortingOrder: 0
+  m_SortingLayer: 2
+  m_SortingOrder: -1
   m_Sprite: {fileID: -1183258145, guid: 633852217cfb9884d98fff920d454533, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.9019608}
   m_FlipX: 0
@@ -159,7 +159,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1880306489
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 731149547, guid: 633852217cfb9884d98fff920d454533, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -187,11 +187,12 @@ MonoBehaviour:
   ballSpeed: 7.5
   rb2D: {fileID: 2846669404273070601}
   hitpointRange: 0.1
+  minVelocityValue: 0.1
   maxAngleBounceRadious: 75
   playerWidth: 2
   bounceRangeVectical: {x: 85, y: 95}
   bounceRangeHorizontalRight: {x: 170, y: 180}
-  bounceRangeHorizontalLeft: {x: 0, y: 10}
+  bounceRangeHorizontalLeft: {x: 1, y: 10}
 --- !u!50 &2846669404273070601
 Rigidbody2D:
   serializedVersion: 4

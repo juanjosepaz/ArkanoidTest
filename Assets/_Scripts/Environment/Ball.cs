@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
+    public static Action OnBallCreated;
     public static Action OnBallDestroyed;
 
     [Header("References")]
@@ -14,6 +15,7 @@ public class Ball : MonoBehaviour
 
     [Header("Values")]
     [Range(0f, 0.9f)][SerializeField] private float hitpointRange;
+    [SerializeField] private float minVelocityValue;
     [SerializeField] private float maxAngleBounceRadious;
     [SerializeField] private float playerWidth;
     private Vector3 lastVelocity;
@@ -41,6 +43,11 @@ public class Ball : MonoBehaviour
         rb2D.velocity = rb2D.velocity.normalized * ballSpeed;
 
         blockDestroyedInThisFrame = false;
+    }
+
+    private void OnEnable()
+    {
+        OnBallCreated?.Invoke();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -93,7 +100,7 @@ public class Ball : MonoBehaviour
 
     private Vector3 ClampBounceDirection(Vector2 direction)
     {
-        float bounceAngle = GetBounceAngleFromDirection(direction);
+        float bounceAngle = DirectionAngleConverter.GetAngleFromDirection(direction);
 
         float sign = Mathf.Sign(bounceAngle);
 
@@ -110,11 +117,25 @@ public class Ball : MonoBehaviour
         }
         else if (Mathf.Abs(bounceAngle) > bounceRangeHorizontalRight.x && Mathf.Abs(bounceAngle) < bounceRangeHorizontalRight.y)
         {
-            bounceAngle = bounceRangeHorizontalRight.x;
+            if (Mathf.Abs(bounceAngle - bounceRangeHorizontalRight.x) < Mathf.Abs(bounceAngle - bounceRangeHorizontalRight.y))
+            {
+                bounceAngle = bounceRangeHorizontalRight.x;
+            }
+            else
+            {
+                bounceAngle = bounceRangeHorizontalRight.y;
+            }
         }
         else if (Mathf.Abs(bounceAngle) > bounceRangeHorizontalLeft.x && Mathf.Abs(bounceAngle) < bounceRangeHorizontalLeft.y)
         {
-            bounceAngle = bounceRangeHorizontalLeft.x;
+            if (Mathf.Abs(bounceAngle - bounceRangeHorizontalLeft.x) < Mathf.Abs(bounceAngle - bounceRangeHorizontalLeft.y))
+            {
+                bounceAngle = bounceRangeHorizontalLeft.x;
+            }
+            else
+            {
+                bounceAngle = bounceRangeHorizontalLeft.y;
+            }
         }
         else
         {
@@ -123,34 +144,24 @@ public class Ball : MonoBehaviour
 
         bounceAngle *= sign;
 
-        Vector2 newDirection = GetBounceDirectionFromAngle(bounceAngle);
+        Vector2 newDirection = DirectionAngleConverter.GetDirectionFromAngle(bounceAngle);
 
         return newDirection;
     }
 
-    private float GetBounceAngleFromDirection(Vector2 direction)
-    {
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-        return angle;
-    }
-
-    private Vector2 GetBounceDirectionFromAngle(float angle)
-    {
-        float angleInRadians = angle * Mathf.Deg2Rad;
-
-        Vector2 direction = new(Mathf.Cos(angleInRadians), Mathf.Sin(angleInRadians));
-
-        return direction;
-    }
-
     private void FixVelocity()
     {
-        float minVelocity = 0.1f;
-
-        if (Mathf.Abs(rb2D.velocity.x) < minVelocity || Mathf.Abs(rb2D.velocity.y) < minVelocity)
+        if (Mathf.Abs(rb2D.velocity.x) < minVelocityValue || Mathf.Abs(rb2D.velocity.y) < minVelocityValue)
         {
-            rb2D.velocity = -lastBounceVelocity;
+            if (lastBounceVelocity == Vector3.zero)
+            {
+                rb2D.velocity = new(-minVelocityValue, -minVelocityValue);
+                lastBounceVelocity = -rb2D.velocity;
+            }
+            else
+            {
+                rb2D.velocity = -lastBounceVelocity;
+            }
         }
     }
 
@@ -197,4 +208,15 @@ public class Ball : MonoBehaviour
     }
 
     #endregion
+
+    public void SetBallVelocityByDirection(Vector2 direction)
+    {
+        rb2D.simulated = true;
+        rb2D.velocity = direction * ballSpeed;
+        isBallMoving = true;
+    }
+
+    public Vector2 GetBallVelocityDirection() => rb2D.velocity.normalized;
+    public Vector2 GetLastVelocity() => lastVelocity;
+    public Vector2 GetLastBounceVelocity() => lastBounceVelocity;
 }

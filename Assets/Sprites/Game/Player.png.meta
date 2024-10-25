@@ -815,9 +815,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 152
-        y: 43
+        y: 44
         width: 3
-        height: 9
+        height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -836,9 +836,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 165
-        y: 43
+        y: 44
         width: 3
-        height: 9
+        height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -853,7 +853,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_1
+      name: ShootParticle_3
       rect:
         serializedVersion: 2
         x: 152
@@ -874,7 +874,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Particle_2
+      name: ShootParticle_4
       rect:
         serializedVersion: 2
         x: 165
@@ -1050,7 +1050,7 @@ TextureImporter:
         width: 33
         height: 17
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1058,6 +1058,48 @@ TextureImporter:
       bones: []
       spriteID: b3bc042de4637104d9aada1bf09b1323
       internalID: 1268980868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShootParticle_1
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 41
+        width: 4
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0def21233436364d8cbf39809f9c9cd
+      internalID: 1405130761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ShootParticle_2
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 41
+        width: 4
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bba9c2cafee15934e9742cefa36500ff
+      internalID: 1708159180
       vertices: []
       indices: 
       edges: []
@@ -1077,8 +1119,6 @@ TextureImporter:
       BallShadow: -1183258145
       Bullet_1: -1243141191
       Bullet_2: 34525543
-      Particle_1: -396557994
-      Particle_2: 1171339359
       Player_0: 407824416
       Player_1: -2075601531
       Player_10: -781681500
@@ -1122,6 +1162,10 @@ TextureImporter:
       Player_Destroy_7: 769235224
       Player_Destroy_8: 1268980868
       Player_Destroy_9: 46600460
+      ShootParticle_1: 1405130761
+      ShootParticle_2: 1708159180
+      ShootParticle_3: -396557994
+      ShootParticle_4: 1171339359
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
