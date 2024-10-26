@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -12,12 +13,13 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private GameObject gameOverGameObject;
     [SerializeField] private GameObject newHighScoreGameObject;
     [SerializeField] private TextMeshProUGUI finalScoreText;
+    [SerializeField] private GameObject mainMenuButton;
 
     [Header("Animation Time")]
     [SerializeField] private float waitAnimationTime;
     [SerializeField] private float fadeAnimationTime;
     [SerializeField] private float timeToActivateText;
-    
+
     private void OnEnable()
     {
         GameManager.OnGameOver += GameOverAnimation;
@@ -45,7 +47,7 @@ public class GameOverUI : MonoBehaviour
 
         yield return new WaitForSeconds(waitAnimationTime);
 
-        backgroundCanvasGroup.DOFade(1f, fadeAnimationTime);
+        backgroundCanvasGroup.DOFade(1f, fadeAnimationTime).SetUpdate(true);
 
         yield return new WaitForSeconds(fadeAnimationTime * 2);
 
@@ -62,8 +64,19 @@ public class GameOverUI : MonoBehaviour
             newHighScoreGameObject.SetActive(true);
         }
 
-        yield return new WaitForSeconds(timeToActivateText * 3);
+        yield return new WaitForSeconds(timeToActivateText * 2);
 
+        mainMenuButton.SetActive(true);
+
+        yield return new WaitForSeconds(timeToActivateText);
+
+        EventSystem.current.SetSelectedGameObject(mainMenuButton);
+    }
+
+    public void MainMenuButton()
+    {
         SceneManagerSingleton.Instance.LoadMainMenu();
+
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }

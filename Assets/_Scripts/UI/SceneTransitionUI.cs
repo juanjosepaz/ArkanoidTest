@@ -32,7 +32,8 @@ public class SceneTransitionUI : MonoBehaviour
     {
         blockObject.DOAnchorPosX(finalExitPosition, timeTocompleteAnimation)
         .SetEase(Ease.Linear)
-        .OnComplete(() => blockObject.gameObject.SetActive(false));
+        .OnComplete(() => blockObject.gameObject.SetActive(false))
+        .SetUpdate(true);
     }
 
     public void ExitSceneAnimation()
@@ -41,7 +42,7 @@ public class SceneTransitionUI : MonoBehaviour
 
         blockObject.gameObject.SetActive(true);
 
-        blockObject.DOAnchorPosX(0, timeTocompleteAnimation);
+        blockObject.DOAnchorPosX(0, timeTocompleteAnimation).SetUpdate(true);
     }
 
     public float GetTimeToCompleteAnimation()

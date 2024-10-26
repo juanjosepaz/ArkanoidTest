@@ -45,4 +45,16 @@ public class InputReader : ScriptableObject, IPlayerActions
             ShootEvent?.Invoke(false);
         }
     }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            PauseMenuUI pauseMenuUI = PauseMenuUI.Instance;
+
+            if (pauseMenuUI == null) { return; }
+
+            pauseMenuUI.PerformePauseButton();
+        }
+    }
 }

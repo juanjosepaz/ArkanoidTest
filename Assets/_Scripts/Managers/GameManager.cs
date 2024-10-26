@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public static Action OnRoundWon;
     public static Action OnGameOver;
+    public static Action OnGameStarted;
 
     [Header("References")]
     [SerializeField] private RoundReadyAnimationUI roundReadyAnimationUI;
@@ -60,7 +61,11 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(waitPlayerAnimationTime);
 
+        PauseMenuUI.canPauseGame = true;
+
         SpawnPlayer();
+
+        OnGameStarted?.Invoke();
     }
 
     private void SpawnPlayer()
@@ -98,12 +103,8 @@ public class GameManager : MonoBehaviour
         {
             DestroyAllBallsInGame();
             DestroyAllPowerUpsInGame();
-
-            if (player != null)
-            {
-                player.LosePlayerControl();
-            }
-
+            Destroy(player.gameObject);
+            player = null;
             OnRoundWon?.Invoke();
         }
         else

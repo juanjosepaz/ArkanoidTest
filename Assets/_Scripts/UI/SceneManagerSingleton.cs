@@ -7,6 +7,7 @@ public class SceneManagerSingleton : MonoBehaviour
 {
     public static SceneManagerSingleton Instance { get; private set; }
 
+    [SerializeField] private float timeOffsetAnimation;
     private const int MAIN_MENU_SCENE_INDEX = 0;
 
     private void Awake()
@@ -39,13 +40,22 @@ public class SceneManagerSingleton : MonoBehaviour
 
     private IEnumerator LoadSceneAnimation(int sceneIndex)
     {
-        float timeTocompleteAnimation = SceneTransitionUI.Instance.GetTimeToCompleteAnimation();
+        float timeTocompleteAnimation = SceneTransitionUI.Instance.GetTimeToCompleteAnimation() + timeOffsetAnimation;
 
         SceneTransitionUI.Instance.ExitSceneAnimation();
 
-        yield return new WaitForSeconds(timeTocompleteAnimation);
+        yield return new WaitForSecondsRealtime(timeTocompleteAnimation);
+
+        GamePausedCheck();
 
         SceneManager.LoadScene(sceneIndex);
+    }
+
+    private void GamePausedCheck()
+    {
+        Time.timeScale = 1f;
+
+        PauseMenuUI.isGamePaused = false;
     }
 
     public int GetActualSceneIndex()
