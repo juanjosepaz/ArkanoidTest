@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
 {
     public static Action OnBallCreated;
     public static Action OnBallDestroyed;
+    private Action<Ball> releaseAction;
 
     [Header("References")]
     [SerializeField] private float ballSpeed;
@@ -168,6 +169,7 @@ public class Ball : MonoBehaviour
     #endregion
 
     #region ShootBall
+
     public void ShootBall(Vector3 playerPosition)
     {
         rb2D.simulated = true;
@@ -200,21 +202,38 @@ public class Ball : MonoBehaviour
 
     #region Behaviour
 
-    public void DestroyBall()
+    public void InitializeBallOnPlayer()
     {
-        OnBallDestroyed?.Invoke();
-
-        Destroy(gameObject);
+        rb2D.simulated = false;
+        isBallMoving = false;
+        rb2D.velocity = Vector2.zero;
+        lastBounceVelocity = Vector2.zero;
+        lastVelocity = Vector2.zero;
     }
 
-    #endregion
+    public void ReleaseBall(Action<Ball> releaseActionParameter)
+    {
+        releaseAction = releaseActionParameter;
+    }
 
-    public void SetBallVelocityByDirection(Vector2 direction)
+    public void DestroyBall(bool destroyedByLimit)
+    {
+        if (destroyedByLimit)
+        {
+            OnBallDestroyed?.Invoke();
+        }
+
+        releaseAction(this);
+    }
+
+    public void SetNewBallOnSpawn(Vector2 direction)
     {
         rb2D.simulated = true;
         rb2D.velocity = direction * ballSpeed;
         isBallMoving = true;
     }
+
+    #endregion
 
     public Vector2 GetBallVelocityDirection() => rb2D.velocity.normalized;
     public Vector2 GetLastVelocity() => lastVelocity;

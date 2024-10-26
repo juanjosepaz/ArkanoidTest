@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DisruptionPowerUp : PowerUpBase
 {
-    [SerializeField] private Ball ballPrefab;
     [SerializeField] private float angleShootNewBalls;
 
     protected override void GivePlayerPowerUpOnTouch(Collider2D player)
@@ -17,26 +16,21 @@ public class DisruptionPowerUp : PowerUpBase
 
         float ballAngle = DirectionAngleConverter.GetAngleFromDirection(ballDirection);
 
-        Ball newBallRight = CreateNewBall();
+        SpawnNewBall(farthestBall.transform.position, ballAngle, angleShootNewBalls);
+        SpawnNewBall(farthestBall.transform.position, ballAngle, -angleShootNewBalls);
+    }
 
-        newBallRight.transform.position = farthestBall.transform.position;
+    private void SpawnNewBall(Vector2 farthestBallPosition, float farthestBallAngle, float addNewAngle)
+    {
+        Ball newBallRight = GetNewBall();
 
-        float newBallAngleRight = ballAngle + angleShootNewBalls;
+        newBallRight.transform.position = farthestBallPosition;
+
+        float newBallAngleRight = farthestBallAngle + addNewAngle;
 
         Vector2 newBallDirectionRight = DirectionAngleConverter.GetDirectionFromAngle(newBallAngleRight);
 
-        newBallRight.SetBallVelocityByDirection(newBallDirectionRight);
-
-
-        Ball newBallLeft = CreateNewBall();
-
-        newBallLeft.transform.position = farthestBall.transform.position;
-
-        float newBallAngleLeft = ballAngle - angleShootNewBalls;
-
-        Vector2 newBallDirectionLeft = DirectionAngleConverter.GetDirectionFromAngle(newBallAngleLeft);
-
-        newBallLeft.SetBallVelocityByDirection(newBallDirectionLeft);
+        newBallRight.SetNewBallOnSpawn(newBallDirectionRight);
     }
 
     private Ball GetFarthestBall()
@@ -62,8 +56,8 @@ public class DisruptionPowerUp : PowerUpBase
         return farthestBall;
     }
 
-    private Ball CreateNewBall()
+    private Ball GetNewBall()
     {
-        return Instantiate(ballPrefab);
+        return BallObjectPool.Instance.GetBall();
     }
 }

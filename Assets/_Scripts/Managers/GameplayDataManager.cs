@@ -8,10 +8,11 @@ public class GameplayDataManager : MonoBehaviour
     public static GameplayDataManager Instance { get; private set; }
     public static Action<int> OnLifesChanged;
     public static Action<int> OnScoreChanged;
+    public static Action<int> OnHighScoreChanged;
     public const string HIGH_SCORE = "HighScore";
 
     [Header("Player")]
-    private const int MAX_LIFES = 5;
+    private const int MAX_LIFES = 7;
     private int actualLifes;
 
     [Header("Score")]
@@ -54,6 +55,11 @@ public class GameplayDataManager : MonoBehaviour
     {
         actualScore += block.GetBlockScore();
         OnScoreChanged?.Invoke(actualScore);
+
+        if (actualScore > highScore)
+        {
+            OnHighScoreChanged?.Invoke(actualScore);
+        }
     }
 
     public void LifeGained()
@@ -81,8 +87,9 @@ public class GameplayDataManager : MonoBehaviour
     public (int finalScore, bool isANewHighScore) GetFinalScoreValues()
     {
         bool isANewHighScore = false;
+        int lastHighScore = PlayerPrefs.GetInt(HIGH_SCORE, 0);
 
-        if (actualScore > highScore)
+        if (actualScore > lastHighScore)
         {
             highScore = actualScore;
             PlayerPrefs.SetInt(HIGH_SCORE, actualScore);
@@ -91,4 +98,13 @@ public class GameplayDataManager : MonoBehaviour
 
         return (actualScore, isANewHighScore);
     }
+
+    public int GetActualHighScore()
+    {
+        if (actualScore > highScore) { return actualScore; }
+        return highScore;
+    }
+
+    public int GetActualScore() => actualScore;
+    public int GetActualLifes() => actualLifes;
 }

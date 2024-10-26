@@ -27,6 +27,11 @@ public class SceneManagerSingleton : MonoBehaviour
         LoadScene(MAIN_MENU_SCENE_INDEX);
     }
 
+    public void LoadNextScene()
+    {
+        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
     public void LoadScene(int sceneIndex)
     {
         StartCoroutine(LoadSceneAnimation(sceneIndex));

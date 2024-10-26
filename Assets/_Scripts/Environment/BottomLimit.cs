@@ -8,7 +8,7 @@ public class BottomLimit : MonoBehaviour
     {
         if (other.TryGetComponent(out Ball ball))
         {
-            ball.DestroyBall();
+            ball.DestroyBall(true);
         }
 
         if (other.TryGetComponent(out PowerUpBase powerUp))

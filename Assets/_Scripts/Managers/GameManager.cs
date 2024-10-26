@@ -96,6 +96,14 @@ public class GameManager : MonoBehaviour
 
         if (blocksDestroyed >= blocksInLevel)
         {
+            DestroyAllBallsInGame();
+            DestroyAllPowerUpsInGame();
+
+            if (player != null)
+            {
+                player.LosePlayerControl();
+            }
+
             OnRoundWon?.Invoke();
         }
         else
@@ -137,6 +145,28 @@ public class GameManager : MonoBehaviour
             player.DestroyPlayerOnDefeat();
 
             player = null;
+        }
+
+        DestroyAllPowerUpsInGame();
+    }
+
+    private void DestroyAllPowerUpsInGame()
+    {
+        PowerUpBase[] allPowerUpsInGame = FindObjectsByType<PowerUpBase>(FindObjectsSortMode.None);
+
+        foreach (PowerUpBase powerUp in allPowerUpsInGame)
+        {
+            Destroy(powerUp.gameObject);
+        }
+    }
+
+    private void DestroyAllBallsInGame()
+    {
+        Ball[] allBallsInGame = FindObjectsByType<Ball>(FindObjectsSortMode.None);
+
+        foreach (Ball ball in allBallsInGame)
+        {
+            ball.DestroyBall(false);
         }
     }
 

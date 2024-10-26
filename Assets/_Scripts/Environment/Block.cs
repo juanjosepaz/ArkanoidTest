@@ -14,6 +14,7 @@ public class Block : MonoBehaviour, IDestructible
     [SerializeField] private int maxHitsToDestroy;
     [SerializeField] private int actualHealth;
     [SerializeField] private bool canDestroyTheBlock = true;
+    private bool isDestroyed;
 
     private void OnEnable()
     {
@@ -26,7 +27,7 @@ public class Block : MonoBehaviour, IDestructible
 
         actualHealth--;
 
-        if (actualHealth <= 0)
+        if (actualHealth <= 0 && !isDestroyed)
         {
             DestroyObjectBehaviour();
         }
@@ -34,6 +35,8 @@ public class Block : MonoBehaviour, IDestructible
 
     public void DestroyObjectBehaviour()
     {
+        isDestroyed = true;
+
         OnBlockDestroyed?.Invoke(this);
 
         Destroy(gameObject);

@@ -8,7 +8,8 @@ public class PlayerShoot : MonoBehaviour
     [Header("References")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Animator animator;
-    [SerializeField] private Ball ballAttachedToPlayer;
+    [SerializeField] private Transform ballSpawnPoint;
+    private Ball ballAttachedToPlayer;
 
     [Header("Values")]
     [SerializeField] private bool canShoot;
@@ -25,6 +26,19 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private float deployTime;
     private IEnumerator powerUpTimeCoroutine;
 
+    private void Start()
+    {
+        AttachInitialBallToPlayer();
+    }
+
+    private void AttachInitialBallToPlayer()
+    {
+        ballAttachedToPlayer = BallObjectPool.Instance.GetBall();
+        ballAttachedToPlayer.InitializeBallOnPlayer();
+        ballAttachedToPlayer.transform.position = ballSpawnPoint.position;
+        ballAttachedToPlayer.transform.SetParent(transform);
+    }
+
     private void OnEnable()
     {
         inputReader.ShootEvent += HandleShoot;
@@ -34,6 +48,7 @@ public class PlayerShoot : MonoBehaviour
     {
         inputReader.ShootEvent -= HandleShoot;
     }
+
 
     private void HandleShoot(bool obj)
     {
