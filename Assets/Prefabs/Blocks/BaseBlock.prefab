@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c358eaa8209144fb5c94ee0572b3e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  score: 100
   maxHitsToDestroy: 1
   actualHealth: 1
-  score: 100
+  canDestroyTheBlock: 1

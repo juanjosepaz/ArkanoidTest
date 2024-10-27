@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9f31f74d9a8cd4d90a21e0d2ceed21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 6
+  movementSpeed: 10
   destroyParticle: {fileID: 5934315218573652038}
 --- !u!1001 &5268119616373037442
 PrefabInstance:

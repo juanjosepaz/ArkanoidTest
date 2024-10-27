@@ -13,7 +13,7 @@ public class BottomLimit : MonoBehaviour
 
         if (other.TryGetComponent(out PowerUpBase powerUp))
         {
-            Destroy(powerUp);
+            Destroy(powerUp.gameObject);
         }
     }
 }

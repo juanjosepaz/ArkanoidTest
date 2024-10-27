@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         GameplayDataManager.Instance.InitializeDataManager();
         EventSystem.current.SetSelectedGameObject(playButton);
     }

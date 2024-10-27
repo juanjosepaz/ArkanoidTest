@@ -101,16 +101,21 @@ public class GameManager : MonoBehaviour
 
         if (blocksDestroyed >= blocksInLevel)
         {
-            DestroyAllBallsInGame();
-            DestroyAllPowerUpsInGame();
-            Destroy(player.gameObject);
-            player = null;
-            OnRoundWon?.Invoke();
+            RoundWonBehaviour();
         }
         else
         {
             TryToSpawnAPowerUp(block.transform.position);
         }
+    }
+
+    private void RoundWonBehaviour()
+    {
+        DestroyAllBallsInGame();
+        DestroyAllPowerUpsInGame();
+        if (player != null) { Destroy(player.gameObject); }
+        player = null;
+        OnRoundWon?.Invoke();
     }
 
     private void Ball_OnBallDestroyed()
@@ -149,6 +154,18 @@ public class GameManager : MonoBehaviour
         }
 
         DestroyAllPowerUpsInGame();
+
+        DestroyAllBulletsInGame();
+    }
+
+    private void DestroyAllBulletsInGame()
+    {
+        Bullet[] allBulletsInGame = FindObjectsByType<Bullet>(FindObjectsSortMode.None);
+
+        foreach (Bullet bullet in allBulletsInGame)
+        {
+            Destroy(bullet.gameObject);
+        }
     }
 
     private void DestroyAllPowerUpsInGame()

@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6966172435743655795}
   - component: {fileID: 5017575830441288594}
   - component: {fileID: 3000660894162555575}
+  - component: {fileID: 6268712365348855087}
   m_Layer: 0
   m_Name: PowerUp_Laser
   m_TagString: Untagged
@@ -251,4 +252,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallSpeed: 2.5
-  powerUpTime: 0
+  powerUpTime: 10
+--- !u!50 &6268712365348855087
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3280620026609265379}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 5

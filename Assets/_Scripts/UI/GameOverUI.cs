@@ -41,7 +41,7 @@ public class GameOverUI : MonoBehaviour
 
         backgroundCanvasGroup.blocksRaycasts = true;
 
-        var (finalScore, isANewHighScore) = GameplayDataManager.Instance.GetFinalScoreValues();
+        var (finalScore, isANewHighScore) = GameplayDataManager.Instance.GetScoreValues();
 
         finalScoreText.text = $"FINAL SCORE : {finalScore}";
 

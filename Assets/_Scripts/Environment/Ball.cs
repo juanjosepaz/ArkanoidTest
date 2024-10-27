@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Ball : MonoBehaviour
 {
@@ -12,6 +11,9 @@ public class Ball : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private float ballSpeed;
+    [SerializeField] private float baseBallSpeed;
+    [SerializeField] private float maxBallSpeed;
+    [SerializeField] private float ballSpeedIncreaseRate;
     [SerializeField] private Rigidbody2D rb2D;
 
     [Header("Values")]
@@ -33,23 +35,27 @@ public class Ball : MonoBehaviour
     private bool isBallMoving;
 
     #region UnityMethods
+    private void OnEnable()
+    {
+        OnBallCreated?.Invoke();
+    }
 
     private void Update()
     {
         if (!isBallMoving) { return; }
 
-        FixVelocity();
-
         lastVelocity = rb2D.velocity;
-
-        rb2D.velocity = rb2D.velocity.normalized * ballSpeed;
 
         blockDestroyedInThisFrame = false;
     }
 
-    private void OnEnable()
+    private void FixedUpdate()
     {
-        OnBallCreated?.Invoke();
+        if (!isBallMoving) { return; }
+
+        FixVelocity();
+
+        rb2D.velocity = rb2D.velocity.normalized * ballSpeed;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -74,6 +80,8 @@ public class Ball : MonoBehaviour
         }
 
         BallBounceFromWall(other);
+
+        IncreaseBallSpeed();
     }
     #endregion
 
@@ -218,6 +226,7 @@ public class Ball : MonoBehaviour
         rb2D.velocity = Vector2.zero;
         lastBounceVelocity = Vector2.zero;
         lastVelocity = Vector2.zero;
+        ballSpeed = baseBallSpeed;
     }
 
     public void ReleaseBall(Action<Ball> releaseActionParameter)
@@ -240,6 +249,15 @@ public class Ball : MonoBehaviour
         rb2D.simulated = true;
         rb2D.velocity = direction * ballSpeed;
         isBallMoving = true;
+        ballSpeed = baseBallSpeed;
+    }
+
+    private void IncreaseBallSpeed()
+    {
+        if (ballSpeed + ballSpeedIncreaseRate < maxBallSpeed)
+        {
+            ballSpeed += ballSpeedIncreaseRate;
+        }
     }
 
     #endregion

@@ -2923,7 +2923,7 @@ MonoBehaviour:
   mainMenuButton: {fileID: 708867767}
   waitTimeToActivateAnimation: 1.5
   timeToActivateText: 1
-  timeToActivateFeedBack: 2
+  timeToActivateFeedBack: 1
 --- !u!1 &1838143929
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,12 +12,13 @@ public class GameplayDataManager : MonoBehaviour
     public const string HIGH_SCORE = "HighScore";
 
     [Header("Player")]
-    private const int MAX_LIFES = 7;
+    private const int MAX_LIFES = 6;
     private int actualLifes;
 
     [Header("Score")]
     private int highScore;
     private int actualScore;
+    private int savedScore;
 
     private void Awake()
     {
@@ -37,15 +38,18 @@ public class GameplayDataManager : MonoBehaviour
     private void OnEnable()
     {
         Block.OnBlockDestroyed += Block_OnBlockDestroyed;
+        GameManager.OnRoundWon += GameManager_OnRoundWon;
     }
 
     private void OnDisable()
     {
         Block.OnBlockDestroyed -= Block_OnBlockDestroyed;
+        GameManager.OnRoundWon -= GameManager_OnRoundWon;
     }
 
     public void InitializeDataManager()
     {
+        savedScore = 0;
         actualScore = 0;
         actualLifes = 2;
         highScore = PlayerPrefs.GetInt(HIGH_SCORE, 0);
@@ -62,9 +66,14 @@ public class GameplayDataManager : MonoBehaviour
         }
     }
 
+    private void GameManager_OnRoundWon()
+    {
+        savedScore = actualScore;
+    }
+
     public void LifeGained()
     {
-        if (actualLifes + 1 < MAX_LIFES)
+        if (actualLifes + 1 <= MAX_LIFES)
         {
             actualLifes++;
             OnLifesChanged?.Invoke(actualLifes);
@@ -84,27 +93,37 @@ public class GameplayDataManager : MonoBehaviour
         return true;
     }
 
-    public (int finalScore, bool isANewHighScore) GetFinalScoreValues()
+    public (int finalScore, bool isANewHighScore) GetScoreValues()
     {
-        bool isANewHighScore = false;
+        bool isANewHighScore = CheckNewHighScore();
+        return (savedScore, isANewHighScore);
+    }
+
+    private bool CheckNewHighScore()
+    {
         int lastHighScore = PlayerPrefs.GetInt(HIGH_SCORE, 0);
 
-        if (actualScore > lastHighScore)
+        if (savedScore > lastHighScore)
         {
-            highScore = actualScore;
-            PlayerPrefs.SetInt(HIGH_SCORE, actualScore);
-            isANewHighScore = true;
+            highScore = savedScore;
+            PlayerPrefs.SetInt(HIGH_SCORE, highScore);
+            return true;
         }
 
-        return (actualScore, isANewHighScore);
+        return false;
+    }
+
+    public void ResetScoreOnLevelReset()
+    {
+        actualScore = savedScore;
     }
 
     public int GetActualHighScore()
     {
-        if (actualScore > highScore) { return actualScore; }
+        if (savedScore > highScore) { return savedScore; }
         return highScore;
     }
 
-    public int GetActualScore() => actualScore;
+    public int GetActualScore() => savedScore;
     public int GetActualLifes() => actualLifes;
 }

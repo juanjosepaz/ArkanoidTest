@@ -91,9 +91,11 @@ public class PauseMenuUI : MonoBehaviour
 
     public void RestartGameButton()
     {
+        GameplayDataManager.Instance.ResetScoreOnLevelReset();
+
         EventSystem.current.SetSelectedGameObject(null);
 
-        SceneManagerSingleton.Instance.LoadMainMenu();
+        SceneManagerSingleton.Instance.ReloadScene();
     }
 
     public void MainMenuGameButton()

@@ -25,7 +25,7 @@ public class VictoryPanelUI : MonoBehaviour
 
     private IEnumerator StartVictoryPanelAnimationCoroutine()
     {
-        var (finalScore, isANewHighScore) = GameplayDataManager.Instance.GetFinalScoreValues();
+        var (finalScore, isANewHighScore) = GameplayDataManager.Instance.GetScoreValues();
 
         finalScoreText.text = $"FINAL SCORE : {finalScore}";
 

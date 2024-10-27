@@ -173,7 +173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputReader: {fileID: 11400000, guid: 7d6be7ee48b7cb74c9f4283c7c73b74c, type: 2}
   rb2D: {fileID: 6999733850877788258}
-  movementSpeed: 7.5
+  movementSpeed: 8.5
 --- !u!114 &3262491718946937533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,7 +196,6 @@ MonoBehaviour:
   - {fileID: 8599863292384339894}
   timeBtwnShots: 1
   isShootPowerUpActive: 0
-  powerUpTime: 5
   deployTime: 1
 --- !u!61 &4209025489980739284
 BoxCollider2D:

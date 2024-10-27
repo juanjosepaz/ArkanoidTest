@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9093259990038075202}
   - component: {fileID: 4824385675055766097}
   - component: {fileID: 437610865775064196}
+  - component: {fileID: -7413758940797761568}
   m_Layer: 0
   m_Name: PowerUp_ExtraLife
   m_TagString: Untagged
@@ -167,6 +168,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallSpeed: 2.5
+--- !u!50 &-7413758940797761568
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780080297434900871}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 0
+  m_CollisionDetection: 1
+  m_Constraints: 5
 --- !u!1 &2297300079890241063
 GameObject:
   m_ObjectHideFlags: 0

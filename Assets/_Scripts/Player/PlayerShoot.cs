@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class PlayerShoot : MonoBehaviour
 {
+    private const string PLAYER_DEPLOY_ANIMATION_VALUE = "Deploy";
+    private const string PLAYER_TURN_OFF_ANIMATION_VALUE = "TurnOffLaser";
+
     [Header("References")]
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Animator animator;
@@ -22,8 +25,8 @@ public class PlayerShoot : MonoBehaviour
 
     [Header("Power Up Shoot")]
     [SerializeField] private bool isShootPowerUpActive;
-    [SerializeField] private float powerUpTime;
     [SerializeField] private float deployTime;
+    private bool isDeployed;
     private IEnumerator powerUpTimeCoroutine;
 
     private void Start()
@@ -81,16 +84,18 @@ public class PlayerShoot : MonoBehaviour
             StopCoroutine(powerUpTimeCoroutine);
         }
 
-        powerUpTimeCoroutine = ShootPowerUpCoroutine();
+        powerUpTimeCoroutine = ShootPowerUpCoroutine(powerUpTime);
 
         StartCoroutine(powerUpTimeCoroutine);
     }
 
-    private IEnumerator ShootPowerUpCoroutine()
+    private IEnumerator ShootPowerUpCoroutine(float powerUpTime)
     {
-        if (!isShootPowerUpActive)
+        if (!isDeployed)
         {
-            animator.SetTrigger("Deploy");
+            isDeployed = true;
+
+            animator.SetTrigger(PLAYER_DEPLOY_ANIMATION_VALUE);
 
             yield return new WaitForSeconds(deployTime);
         }
@@ -101,9 +106,11 @@ public class PlayerShoot : MonoBehaviour
 
         isShootPowerUpActive = false;
 
-        animator.SetTrigger("TurnOffLaser");
+        animator.SetTrigger(PLAYER_TURN_OFF_ANIMATION_VALUE);
 
         yield return new WaitForSeconds(deployTime);
+
+        isDeployed = false;
 
         powerUpTimeCoroutine = null;
     }
