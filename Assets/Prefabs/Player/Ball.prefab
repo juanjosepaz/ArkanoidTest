@@ -193,6 +193,7 @@ MonoBehaviour:
   bounceRangeVectical: {x: 85, y: 95}
   bounceRangeHorizontalRight: {x: 170, y: 180}
   bounceRangeHorizontalLeft: {x: 1, y: 10}
+  minNormalizedValueBounceFromPlayer: 0.25
 --- !u!50 &2846669404273070601
 Rigidbody2D:
   serializedVersion: 4

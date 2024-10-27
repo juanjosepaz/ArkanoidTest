@@ -27,6 +27,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private Vector2 bounceRangeVectical;
     [SerializeField] private Vector2 bounceRangeHorizontalRight;
     [SerializeField] private Vector2 bounceRangeHorizontalLeft;
+    [SerializeField] private float minNormalizedValueBounceFromPlayer;
 
     [Header("Shoot Ball Values")]
     private bool isBallMoving;
@@ -58,8 +59,11 @@ public class Ball : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             BallBounceFromPlayer(other);
+
+            return;
         }
-        else if (other.gameObject.TryGetComponent(out IDestructible destructible))
+
+        if (other.gameObject.TryGetComponent(out IDestructible destructible))
         {
             if (!blockDestroyedInThisFrame)
             {
@@ -67,13 +71,9 @@ public class Ball : MonoBehaviour
 
                 blockDestroyedInThisFrame = true;
             }
+        }
 
-            BallBounceFromWall(other);
-        }
-        else
-        {
-            BallBounceFromWall(other);
-        }
+        BallBounceFromWall(other);
     }
     #endregion
 
@@ -92,6 +92,15 @@ public class Ball : MonoBehaviour
 
     private void BallBounceFromPlayer(Collision2D other)
     {
+        Vector2 contactNormal = other.contacts[0].normal;
+
+        if (contactNormal.y < 0 || Mathf.Abs(contactNormal.x) > minNormalizedValueBounceFromPlayer)
+        {
+            BallBounceFromWall(other);
+
+            return;
+        }
+
         Transform playerTransform = other.transform;
 
         Vector2 bounceDirectionNormalized = GetBounceDirectionNormalizedFromPlayer(playerTransform.position);

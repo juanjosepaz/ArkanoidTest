@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class VictoryPanelUI : MonoBehaviour
 {
@@ -46,10 +47,16 @@ public class VictoryPanelUI : MonoBehaviour
         yield return new WaitForSeconds(timeToActivateFeedBack);
 
         mainMenuButton.SetActive(true);
+
+        yield return new WaitForSeconds(timeToActivateFeedBack);
+
+        EventSystem.current.SetSelectedGameObject(mainMenuButton);
     }
 
     public void MainMenuButton()
     {
         SceneManagerSingleton.Instance.LoadMainMenu();
+
+        EventSystem.current.SetSelectedGameObject(null);
     }
 }
