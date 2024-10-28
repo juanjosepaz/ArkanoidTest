@@ -20,6 +20,9 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private float fadeAnimationTime;
     [SerializeField] private float timeToActivateText;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip gameOverSound;
+
     private void OnEnable()
     {
         GameManager.OnGameOver += GameOverAnimation;
@@ -47,26 +50,36 @@ public class GameOverUI : MonoBehaviour
 
         yield return new WaitForSeconds(waitAnimationTime);
 
+        SoundManager.Instance.PlaySound(gameOverSound);
+
         backgroundCanvasGroup.DOFade(1f, fadeAnimationTime).SetUpdate(true);
 
         yield return new WaitForSeconds(fadeAnimationTime * 2);
 
         gameOverGameObject.SetActive(true);
 
+        SoundManager.Instance.PlayTextEnableSound();
+
         yield return new WaitForSeconds(timeToActivateText);
 
         finalScoreText.gameObject.SetActive(true);
+
+        SoundManager.Instance.PlayTextEnableSound();
 
         if (isANewHighScore)
         {
             yield return new WaitForSeconds(timeToActivateText * 2);
 
             newHighScoreGameObject.SetActive(true);
+
+            SoundManager.Instance.PlayTextEnableSound();
         }
 
         yield return new WaitForSeconds(timeToActivateText * 2);
 
         mainMenuButton.SetActive(true);
+
+        SoundManager.Instance.PlayTextEnableSound();
 
         yield return new WaitForSeconds(timeToActivateText);
 
@@ -75,6 +88,8 @@ public class GameOverUI : MonoBehaviour
 
     public void MainMenuButton()
     {
+        SoundManager.Instance.PlayTextEnableSound();
+
         SceneManagerSingleton.Instance.LoadMainMenu();
 
         EventSystem.current.SetSelectedGameObject(null);

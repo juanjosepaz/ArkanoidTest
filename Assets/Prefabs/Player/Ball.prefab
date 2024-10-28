@@ -262,3 +262,4 @@ MonoBehaviour:
   bounceRangeHorizontalRight: {x: 170, y: 180}
   bounceRangeHorizontalLeft: {x: 1, y: 10}
   minNormalizedValueBounceFromPlayer: 0.25
+  playerBounceSound: {fileID: 8300000, guid: 1bbc06effb4248644bffd37e5ffbe5aa, type: 3}

@@ -20,6 +20,9 @@ public class GameplayDataManager : MonoBehaviour
     private int actualScore;
     private int savedScore;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip extraLifeSound;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -76,6 +79,7 @@ public class GameplayDataManager : MonoBehaviour
         if (actualLifes + 1 <= MAX_LIFES)
         {
             actualLifes++;
+            SoundManager.Instance.PlaySound(extraLifeSound);
             OnLifesChanged?.Invoke(actualLifes);
         }
     }

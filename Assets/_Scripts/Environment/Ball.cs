@@ -38,6 +38,9 @@ public class Ball : MonoBehaviour
     [Header("Shoot Ball Values")]
     private bool isBallMoving;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip playerBounceSound;
+
     #region UnityMethods
     private void OnEnable()
     {
@@ -77,9 +80,13 @@ public class Ball : MonoBehaviour
         {
             if (!blockDestroyedInThisFrame)
             {
+                BallBounceFromWall(other);
+
                 destructible.TakeHit();
 
                 blockDestroyedInThisFrame = true;
+
+                return;
             }
         }
 
@@ -98,6 +105,14 @@ public class Ball : MonoBehaviour
                 rb2D.velocity = GetBounceDirectionNormalizedFromPlayer(other.transform.position);
                 timeInCollisionWithPlayer = 0f;
             }
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player") && rb2D.velocity.magnitude < minVelocityValue)
+        {
+            rb2D.velocity = GetDirectionToFieldCenter();
         }
     }
 
@@ -136,6 +151,8 @@ public class Ball : MonoBehaviour
         rb2D.velocity = bounceDirectionNormalized * Mathf.Max(lastVelocity.magnitude, 0);
 
         StartCoroutine(IgnoreCollisionWithPlayerCoroutine(other));
+
+        SoundManager.Instance.PlaySound(playerBounceSound);
     }
 
     private IEnumerator IgnoreCollisionWithPlayerCoroutine(Collision2D other)
@@ -229,6 +246,8 @@ public class Ball : MonoBehaviour
         rb2D.velocity = shootDirection * ballSpeed;
 
         isBallMoving = true;
+
+        SoundManager.Instance.PlaySound(playerBounceSound);
     }
 
     private Vector2 GetBounceDirectionNormalizedFromPlayer(Vector3 playerPosition)

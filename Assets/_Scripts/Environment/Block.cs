@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Block : MonoBehaviour, IDestructible
 {
@@ -16,6 +15,10 @@ public class Block : MonoBehaviour, IDestructible
     [SerializeField] private bool canDestroyTheBlock = true;
     private bool isDestroyed;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip blockHitSound;
+
+
     private void OnEnable()
     {
         actualHealth = maxHitsToDestroy;
@@ -23,6 +26,8 @@ public class Block : MonoBehaviour, IDestructible
 
     public void TakeHit()
     {
+        SoundManager.Instance.PlaySound(blockHitSound);
+
         if (!canDestroyTheBlock) { return; }
 
         actualHealth--;

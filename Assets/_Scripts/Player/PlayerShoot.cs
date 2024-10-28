@@ -30,6 +30,10 @@ public class PlayerShoot : MonoBehaviour
     private bool isDeployed;
     private IEnumerator powerUpTimeCoroutine;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip deploySound;
+    [SerializeField] private AudioClip shootSound;
+
     private void Start()
     {
         AttachInitialBallToPlayer();
@@ -98,6 +102,8 @@ public class PlayerShoot : MonoBehaviour
 
             animator.SetTrigger(PLAYER_DEPLOY_ANIMATION_VALUE);
 
+            SoundManager.Instance.PlaySound(deploySound);
+
             yield return new WaitForSeconds(deployTime);
         }
 
@@ -134,6 +140,8 @@ public class PlayerShoot : MonoBehaviour
 
             bullet.transform.position = shootPoint.position;
         }
+
+        SoundManager.Instance.PlaySound(shootSound);
     }
 
     private Bullet GetBullet()

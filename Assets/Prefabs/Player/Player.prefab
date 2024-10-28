@@ -204,6 +204,7 @@ MonoBehaviour:
   animator: {fileID: 7091465860729808031}
   waitTimeToPlay: 0.75
   waitTimeToDestroy: 0.75
+  playerDestroyedSound: {fileID: 8300000, guid: e6329c8ca2746554db2729a8ad75ab98, type: 3}
 --- !u!114 &7653448005430995820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +244,8 @@ MonoBehaviour:
   timeBtwnShots: 1
   isShootPowerUpActive: 0
   deployTime: 1
+  deploySound: {fileID: 8300000, guid: 60c25d97c92cce64196268f1ae85e3fd, type: 3}
+  shootSound: {fileID: 8300000, guid: ff18e1973b6a3ce478d4c8d40aaa971d, type: 3}
 --- !u!1 &6036634671434241734
 GameObject:
   m_ObjectHideFlags: 0

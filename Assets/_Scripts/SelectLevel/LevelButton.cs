@@ -9,6 +9,7 @@ public class LevelButton : MonoBehaviour
 {
     [SerializeField] private Image levelImage;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private AudioClip gameStartSound;
     private int levelIndex;
 
     public void InitializeButton(PlayableLevelSO playableLevelSO)
@@ -20,7 +21,16 @@ public class LevelButton : MonoBehaviour
 
     public void PlayLevel()
     {
+        StartCoroutine(StartLevelCoroutine());
+    }
+
+    private IEnumerator StartLevelCoroutine()
+    {
         EventSystem.current.SetSelectedGameObject(null);
+
+        SoundManager.Instance.PlaySound(gameStartSound);
+
+        yield return new WaitForSeconds(gameStartSound.length);
 
         SceneManagerSingleton.Instance.LoadScene(levelIndex);
     }

@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     [Range(0f, 100f)][SerializeField] private float spawnPowerUpChance;
     [SerializeField] private PowerUpBase[] powerUpPrefabs;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip roundWonSound;
+
     private void OnEnable()
     {
         Block.OnBlockDestroyed += Block_OnBlockDestroyed;
@@ -115,6 +118,7 @@ public class GameManager : MonoBehaviour
         DestroyAllPowerUpsInGame();
         if (player != null) { Destroy(player.gameObject); }
         player = null;
+        SoundManager.Instance.PlaySound(roundWonSound);
         OnRoundWon?.Invoke();
     }
 

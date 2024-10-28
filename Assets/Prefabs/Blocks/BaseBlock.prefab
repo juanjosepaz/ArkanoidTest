@@ -232,3 +232,4 @@ MonoBehaviour:
   maxHitsToDestroy: 1
   actualHealth: 1
   canDestroyTheBlock: 1
+  blockHitSound: {fileID: 8300000, guid: c261a80da3544384f987330c98cac018, type: 3}

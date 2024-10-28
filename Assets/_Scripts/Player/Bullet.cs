@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     private const string BORDERS_LAYER_NAME = "Borders";
     [SerializeField] private float movementSpeed;
     [SerializeField] private GameObject destroyParticle;
+    [SerializeField] private AudioClip bulletHitSound;
 
     private void Update()
     {
@@ -21,13 +22,17 @@ public class Bullet : MonoBehaviour
 
             InstantiateDestroyParticle();
 
+            SoundManager.Instance.PlaySound(bulletHitSound);
+
             Destroy(gameObject);
         }
 
         if (other.gameObject.layer == LayerMask.NameToLayer(BORDERS_LAYER_NAME))
         {
             InstantiateDestroyParticle();
-            
+
+            SoundManager.Instance.PlaySound(bulletHitSound);
+
             Destroy(gameObject);
         }
     }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerPlatform : MonoBehaviour
 {
+    private const string DESTROY_ANIMATION_TRIGGER = "Destroy";
+
     [Header("References")]
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private PlayerShoot playerShoot;
@@ -13,7 +15,9 @@ public class PlayerPlatform : MonoBehaviour
     [Header("Animation Values")]
     [SerializeField] private float waitTimeToPlay;
     [SerializeField] private float waitTimeToDestroy;
-    private const string DESTROY_ANIMATION_TRIGGER = "Destroy";
+
+    [Header("Sounds")]
+    [SerializeField] private AudioClip playerDestroyedSound;
 
     private void OnEnable()
     {
@@ -46,6 +50,8 @@ public class PlayerPlatform : MonoBehaviour
         LosePlayerControl();
 
         animator.SetTrigger(DESTROY_ANIMATION_TRIGGER);
+
+        SoundManager.Instance.PlaySound(playerDestroyedSound);
 
         yield return new WaitForSeconds(waitTimeToDestroy);
 

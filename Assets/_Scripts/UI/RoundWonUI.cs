@@ -44,11 +44,15 @@ public class RoundWonUI : MonoBehaviour
 
         roundWonMessajeGameObject.SetActive(true);
 
+        SoundManager.Instance.PlayTextEnableSound();
+
         yield return new WaitForSeconds(enableButtonTime);
 
         continueButton.SetActive(true);
 
         mainMenuButton.SetActive(true);
+
+        SoundManager.Instance.PlayTextEnableSound();
 
         yield return new WaitForSeconds(enableButtonTime);
 
@@ -57,6 +61,8 @@ public class RoundWonUI : MonoBehaviour
 
     public void ContinueButton()
     {
+        SoundManager.Instance.PlayTextEnableSound();
+
         SceneManagerSingleton.Instance.LoadNextScene();
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -64,6 +70,8 @@ public class RoundWonUI : MonoBehaviour
 
     public void MainMenuButton()
     {
+        SoundManager.Instance.PlayTextEnableSound();
+
         SceneManagerSingleton.Instance.LoadMainMenu();
 
         EventSystem.current.SetSelectedGameObject(null);

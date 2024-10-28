@@ -57,6 +57,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7713194838122856461, guid: d5792a63bb87b3f43ae3db7895ac0949, type: 3}
+      propertyPath: blockHitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3713d0d7c37de3446ba2a038c3c8a467, type: 3}
+    - target: {fileID: 7713194838122856461, guid: d5792a63bb87b3f43ae3db7895ac0949, type: 3}
       propertyPath: maxHitsToDestroy
       value: 100
       objectReference: {fileID: 0}

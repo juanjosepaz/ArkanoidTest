@@ -10,6 +10,7 @@ public class RoundReadyAnimationUI : MonoBehaviour
     [SerializeField] private GameObject readyGameObject;
     [SerializeField] private float waitTimeToShowReady;
     [SerializeField] private float waitTimeToEnAnimation;
+    [SerializeField] private AudioClip roundStartSound;
 
     public void StartRoundAnimation(float waitTimeToStartAnimation)
     {
@@ -21,6 +22,8 @@ public class RoundReadyAnimationUI : MonoBehaviour
         roundNumberText.text = SceneManagerSingleton.Instance.GetActualSceneIndex().ToString();
 
         yield return new WaitForSeconds(waitTimeToStartAnimation);
+
+        SoundManager.Instance.PlaySound(roundStartSound);
 
         roundGameObject.SetActive(true);
 

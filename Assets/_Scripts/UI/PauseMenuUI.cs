@@ -77,6 +77,8 @@ public class PauseMenuUI : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(resumeButton);
 
         PauseGame();
+
+        SoundManager.Instance.PlayTextEnableSound();
     }
 
     public void ResumeGameButton()
@@ -86,11 +88,15 @@ public class PauseMenuUI : MonoBehaviour
         pauseMenuGameObject.SetActive(false);
 
         ResumeGame();
+
+        SoundManager.Instance.PlayTextEnableSound();
     }
 
 
     public void RestartGameButton()
     {
+        SoundManager.Instance.PlayTextEnableSound();
+
         GameplayDataManager.Instance.ResetScoreOnLevelReset();
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -100,6 +106,8 @@ public class PauseMenuUI : MonoBehaviour
 
     public void MainMenuGameButton()
     {
+        SoundManager.Instance.PlayTextEnableSound();
+
         EventSystem.current.SetSelectedGameObject(null);
 
         SceneManagerSingleton.Instance.LoadMainMenu();

@@ -149,6 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelImage: {fileID: 6079596775109808198}
   levelText: {fileID: 6379713084714999455}
+  gameStartSound: {fileID: 8300000, guid: 68a507f40e8bb424d80d8e0acba79c73, type: 3}
 --- !u!1 &4357782234542593272
 GameObject:
   m_ObjectHideFlags: 0

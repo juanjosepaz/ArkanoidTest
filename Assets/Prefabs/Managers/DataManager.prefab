@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96545e3572ae0d844b3803602c1712ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  extraLifeSound: {fileID: 8300000, guid: 6cccd7527f4aba443a7ce41560d9bbe6, type: 3}
