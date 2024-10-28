@@ -12,6 +12,7 @@ public class PlayerShoot : MonoBehaviour
     [SerializeField] private InputReader inputReader;
     [SerializeField] private Animator animator;
     [SerializeField] private Transform ballSpawnPoint;
+    [SerializeField] private Collider2D playerCollider;
     private Ball ballAttachedToPlayer;
 
     [Header("Values")]
@@ -37,7 +38,7 @@ public class PlayerShoot : MonoBehaviour
     private void AttachInitialBallToPlayer()
     {
         ballAttachedToPlayer = BallObjectPool.Instance.GetBall();
-        ballAttachedToPlayer.InitializeBallOnPlayer();
+        ballAttachedToPlayer.InitializeBallOnPlayer(playerCollider);
         ballAttachedToPlayer.transform.position = ballSpawnPoint.position;
         ballAttachedToPlayer.transform.SetParent(transform);
     }

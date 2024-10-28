@@ -15,12 +15,16 @@ public class Ball : MonoBehaviour
     [SerializeField] private float maxBallSpeed;
     [SerializeField] private float ballSpeedIncreaseRate;
     [SerializeField] private Rigidbody2D rb2D;
+    [SerializeField] private Collider2D ballCollider;
 
     [Header("Values")]
     [Range(0f, 0.9f)][SerializeField] private float hitpointRange;
     [SerializeField] private float minVelocityValue;
     [SerializeField] private float maxAngleBounceRadious;
     [SerializeField] private float playerWidth;
+    [SerializeField] private float ignoreCollisionWithPlayerTime;
+    [SerializeField] private float maxTimeInCollisionWithPlayer;
+    private float timeInCollisionWithPlayer;
     private Vector3 lastVelocity;
     private Vector3 lastBounceVelocity;
     private bool blockDestroyedInThisFrame;
@@ -80,9 +84,23 @@ public class Ball : MonoBehaviour
         }
 
         BallBounceFromWall(other);
-
-        IncreaseBallSpeed();
     }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            timeInCollisionWithPlayer += Time.deltaTime;
+
+            if (timeInCollisionWithPlayer > maxTimeInCollisionWithPlayer)
+            {
+                StartCoroutine(IgnoreCollisionWithPlayerCoroutine(other));
+                rb2D.velocity = GetBounceDirectionNormalizedFromPlayer(other.transform.position);
+                timeInCollisionWithPlayer = 0f;
+            }
+        }
+    }
+
     #endregion
 
     #region BounceBall
@@ -96,6 +114,8 @@ public class Ball : MonoBehaviour
         direction = ClampBounceDirection(direction);
 
         rb2D.velocity = direction * Mathf.Max(lastVelocity.magnitude, 0);
+
+        IncreaseBallSpeed();
     }
 
     private void BallBounceFromPlayer(Collision2D other)
@@ -114,6 +134,19 @@ public class Ball : MonoBehaviour
         Vector2 bounceDirectionNormalized = GetBounceDirectionNormalizedFromPlayer(playerTransform.position);
 
         rb2D.velocity = bounceDirectionNormalized * Mathf.Max(lastVelocity.magnitude, 0);
+
+        StartCoroutine(IgnoreCollisionWithPlayerCoroutine(other));
+    }
+
+    private IEnumerator IgnoreCollisionWithPlayerCoroutine(Collision2D other)
+    {
+        Collider2D playerCollider = other.gameObject.GetComponent<Collider2D>();
+
+        Physics2D.IgnoreCollision(ballCollider, playerCollider, true);
+
+        yield return new WaitForSeconds(ignoreCollisionWithPlayerTime);
+
+        Physics2D.IgnoreCollision(ballCollider, playerCollider, false);
     }
 
     private Vector3 ClampBounceDirection(Vector2 direction)
@@ -173,7 +206,7 @@ public class Ball : MonoBehaviour
         {
             if (lastBounceVelocity == Vector3.zero)
             {
-                rb2D.velocity = new(-minVelocityValue, -minVelocityValue);
+                rb2D.velocity = GetDirectionToFieldCenter();
                 lastBounceVelocity = -rb2D.velocity;
             }
             else
@@ -219,7 +252,7 @@ public class Ball : MonoBehaviour
 
     #region Behaviour
 
-    public void InitializeBallOnPlayer()
+    public void InitializeBallOnPlayer(Collider2D playerCollider)
     {
         rb2D.simulated = false;
         isBallMoving = false;
@@ -227,6 +260,7 @@ public class Ball : MonoBehaviour
         lastBounceVelocity = Vector2.zero;
         lastVelocity = Vector2.zero;
         ballSpeed = baseBallSpeed;
+        Physics2D.IgnoreCollision(ballCollider, playerCollider, false);
     }
 
     public void ReleaseBall(Action<Ball> releaseActionParameter)
@@ -258,6 +292,11 @@ public class Ball : MonoBehaviour
         {
             ballSpeed += ballSpeedIncreaseRate;
         }
+    }
+
+    private Vector2 GetDirectionToFieldCenter()
+    {
+        return (Vector3.zero - transform.position).normalized;
     }
 
     #endregion

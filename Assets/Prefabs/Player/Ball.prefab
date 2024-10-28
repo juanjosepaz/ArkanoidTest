@@ -94,9 +94,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1368273674533434551}
   - component: {fileID: 6328196945107820355}
-  - component: {fileID: 2267287559744420240}
   - component: {fileID: 2846669404273070601}
   - component: {fileID: 957910435398164663}
+  - component: {fileID: 2267287559744420240}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Untagged
@@ -172,31 +172,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2267287559744420240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6154878761068651859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8a88c70b5b96004c9856b65401ef683, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ballSpeed: 7.5
-  baseBallSpeed: 7.5
-  maxBallSpeed: 10
-  ballSpeedIncreaseRate: 0.1
-  rb2D: {fileID: 2846669404273070601}
-  hitpointRange: 0.1
-  minVelocityValue: 0.1
-  maxAngleBounceRadious: 75
-  playerWidth: 2
-  bounceRangeVectical: {x: 85, y: 95}
-  bounceRangeHorizontalRight: {x: 170, y: 180}
-  bounceRangeHorizontalLeft: {x: 1, y: 10}
-  minNormalizedValueBounceFromPlayer: 0.25
 --- !u!50 &2846669404273070601
 Rigidbody2D:
   serializedVersion: 4
@@ -259,3 +234,31 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.15625
+--- !u!114 &2267287559744420240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154878761068651859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8a88c70b5b96004c9856b65401ef683, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballSpeed: 7.5
+  baseBallSpeed: 7.5
+  maxBallSpeed: 10
+  ballSpeedIncreaseRate: 0.1
+  rb2D: {fileID: 2846669404273070601}
+  ballCollider: {fileID: 957910435398164663}
+  hitpointRange: 0.1
+  minVelocityValue: 0.1
+  maxAngleBounceRadious: 75
+  playerWidth: 2
+  ignoreCollisionWithPlayerTime: 0.2
+  maxTimeInCollisionWithPlayer: 0.05
+  bounceRangeVectical: {x: 85, y: 95}
+  bounceRangeHorizontalRight: {x: 170, y: 180}
+  bounceRangeHorizontalLeft: {x: 1, y: 10}
+  minNormalizedValueBounceFromPlayer: 0.25
