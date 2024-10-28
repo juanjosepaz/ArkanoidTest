@@ -249,14 +249,14 @@ MonoBehaviour:
   ballSpeed: 7.5
   baseBallSpeed: 7.5
   maxBallSpeed: 10
-  ballSpeedIncreaseRate: 0.1
+  ballSpeedIncreaseRate: 0.05
   rb2D: {fileID: 2846669404273070601}
   ballCollider: {fileID: 957910435398164663}
   hitpointRange: 0.1
   minVelocityValue: 0.1
   maxAngleBounceRadious: 75
   playerWidth: 2
-  ignoreCollisionWithPlayerTime: 0.2
+  ignoreCollisionWithPlayerTime: 0.15
   maxTimeInCollisionWithPlayer: 0.05
   bounceRangeVectical: {x: 85, y: 95}
   bounceRangeHorizontalRight: {x: 170, y: 180}
