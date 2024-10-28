@@ -106,6 +106,7 @@ public class GameplayDataManager : MonoBehaviour
     private bool CheckNewHighScore()
     {
         int lastHighScore = PlayerPrefs.GetInt(HIGH_SCORE, 0);
+        actualScore = savedScore;
 
         if (savedScore > lastHighScore)
         {
